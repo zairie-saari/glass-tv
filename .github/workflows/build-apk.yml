@@ -35,6 +35,14 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/glass-tv-release.jks"
           chmod 600 "$RUNNER_TEMP/glass-tv-release.jks"
 
+      - name: Verify release keystore
+        run: |
+          test -s "$RUNNER_TEMP/glass-tv-release.jks" || {
+            echo "ERROR: Release keystore is missing or empty."
+            exit 1
+          }
+          echo "Release keystore file exists."
+
       - name: Build and test APK
         working-directory: launcher
         env:
